@@ -35,6 +35,11 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   // const { id } = req.params;
+  const result = await cloudinary.uploader.upload(req.file.path, {
+    folder: "waysbeans-uploads",
+    use_filename: true,
+    unique_filename: false,
+  });
 
   try {
     const data = req.body;
@@ -42,7 +47,7 @@ exports.updateProfile = async (req, res) => {
     let updateProfile = await profile.update(
       {
         ...data,
-        image: req?.file?.filename,
+        image: result.public_id,
       },
       { where: { id: req.user.id } }
     );
@@ -52,7 +57,7 @@ exports.updateProfile = async (req, res) => {
 
     updateProfile = {
       ...updateProfile,
-      image: process.env.PATH_FILE + req?.file?.filename,
+      image: process.env.PATH_FILE + result.public_id,
     };
 
     await user.update(req.body, {
