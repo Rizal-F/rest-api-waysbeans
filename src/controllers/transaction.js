@@ -80,7 +80,7 @@ exports.addTransaction = async (req, res) => {
     res.send({
       status: "pending",
       message: "Pending transaction payment gateway",
-      // payment,
+      payment,
       id: datatransaction.id,
       product: {
         // id: data.idProduct,
